@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Defender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- HUD -->
+        <div class="hud" id="gameHud">
+            <div class="health-section">
+                <span class="icon">❤️</span>
+                <div class="health-bar"><div id="health"></div></div>
+            </div>
+            <div class="score-section">
+                <span class="icon">⭐</span>
+                <span class="score">Score: <span id="score">0</span></span>
+            </div>
+            <div class="credits-section">
+                <span class="icon">💰</span>
+                <span class="credits">Credits: <span id="credits">100</span></span>
+            </div>
+            <div class="wave-section">
+                <span class="icon">🌐</span>
+                <span class="wave">Wave: <span id="wave">1</span> (<span id="wave-progress">0%</span>)</span>
+                <span class="wave-timer" id="wave-timer">10s</span>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div class="game-container" id="gameContainer">
+            <div class="crt-overlay"></div>
+            <div class="vignette"></div>
+            <div class="stars"></div>
+            <!-- Start Screen -->
+            <div class="start-screen" id="startScreen">
+                <h1>Galactic Defender</h1>
+                <p>Place turrets to stop enemy ships!</p>
+                <p>Click or Tap to add turrets (50 credits each)</p>
+                <p>Press Any Key or Tap to Start</p>
+            </div>
+
+            <!-- Game Screen -->
+            <div class="game-screen" id="gameScreen" style="display: none;">
+                <img src="img/commander.png" class="commander" id="base">
+            </div>
+
+            <!-- Game Over Screen -->
+            <div class="game-over" id="gameOver" style="display: none;">
+                <h1>Game Over</h1>
+                <p>Final Score: <span id="finalScore">0</span></p>
+                <p>Share your defense skills! (Screenshot this!)</p>
+                <button id="restart">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Effects -->
+    <audio id="shootSound" preload="auto">
+        <source src="sounds/shoot.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="hitSound" preload="auto">
+        <source src="sounds/hit.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="explosionSound" preload="auto">
+        <source src="sounds/explosion.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="gameOverSound" preload="auto">
+        <source src="sounds/gameover.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
