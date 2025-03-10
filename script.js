@@ -53,11 +53,9 @@ function startGame() {
     console.log('Game started successfully');
 }
 
-// Start game on keydown or touch
 document.addEventListener('keydown', startGame, { once: true });
 startScreen.addEventListener('touchstart', startGame, { once: true });
 
-// Handle turret placement (click and touch)
 function placeTurret(e) {
     if (!gameActive || credits < 50) return;
     const rect = gameScreen.getBoundingClientRect();
@@ -67,11 +65,11 @@ function placeTurret(e) {
         const turret = document.createElement('img');
         turret.src = 'img/turret-droid.png';
         turret.classList.add('turret');
-        turret.style.left = `${x - 37.5}px`;
-        turret.style.top = `${y - 37.5}px`;
+        turret.style.left = `${x - 45}px`; /* Adjusted for larger turret size */
+        turret.style.top = `${y - 45}px`; /* Adjusted for larger turret size */
         turret.level = 1;
         gameScreen.appendChild(turret);
-        turrets.push({ element: turret, x: x - 37.5, y: y - 37.5, level: 1 });
+        turrets.push({ element: turret, x: x - 45, y: y - 45, level: 1 });
         credits -= 50;
         creditsDisplay.textContent = credits;
         shootSound.play();
@@ -80,18 +78,17 @@ function placeTurret(e) {
 
 gameScreen.addEventListener('click', placeTurret);
 gameScreen.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevent scrolling on touch
+    e.preventDefault();
     placeTurret(e);
 });
 
-// Handle turret upgrades (double-click and double-tap)
 let lastTouchTime = 0;
 gameScreen.addEventListener('dblclick', (e) => {
     if (!gameActive) return;
     const rect = gameScreen.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const turret = turrets.find(t => Math.abs(t.x - (x - 37.5)) < 37.5 && Math.abs(t.y - (y - 37.5)) < 37.5);
+    const turret = turrets.find(t => Math.abs(t.x - (x - 45)) < 45 && Math.abs(t.y - (y - 45)) < 45); /* Adjusted for larger size */
     if (turret && credits >= 50 * turret.level && turret.level < 3) {
         credits -= 50 * turret.level;
         creditsDisplay.textContent = credits;
@@ -107,7 +104,7 @@ gameScreen.addEventListener('touchstart', (e) => {
         const rect = gameScreen.getBoundingClientRect();
         const x = e.touches[0].clientX - rect.left;
         const y = e.touches[0].clientY - rect.top;
-        const turret = turrets.find(t => Math.abs(t.x - (x - 37.5)) < 37.5 && Math.abs(t.y - (y - 37.5)) < 37.5);
+        const turret = turrets.find(t => Math.abs(t.x - (x - 45)) < 45 && Math.abs(t.y - (y - 45)) < 45); /* Adjusted for larger size */
         if (turret && credits >= 50 * turret.level && turret.level < 3) {
             credits -= 50 * turret.level;
             creditsDisplay.textContent = credits;
@@ -132,7 +129,7 @@ function spawnEnemies() {
             const enemy = document.createElement('img');
             enemy.src = 'img/enemy-drone.png';
             enemy.classList.add('enemy');
-            enemy.style.top = `${Math.random() * (gameScreen.clientHeight - 60)}px`;
+            enemy.style.top = `${Math.random() * (gameScreen.clientHeight - 72)}px`; /* Adjusted for larger size */
             gameScreen.appendChild(enemy);
             enemies.push({ element: enemy, x: gameScreen.clientWidth, y: parseFloat(enemy.style.top) });
             enemy.addEventListener('animationend', () => {
@@ -158,7 +155,7 @@ function spawnBoss() {
     const boss = document.createElement('img');
     boss.src = 'img/galactic-overlord.png';
     boss.classList.add('enemy', 'boss');
-    boss.style.top = `${Math.random() * (gameScreen.clientHeight - 120)}px`;
+    boss.style.top = `${Math.random() * (gameScreen.clientHeight - 144)}px`; /* Adjusted for larger size */
     boss.hp = 3;
     gameScreen.appendChild(boss);
     enemies.push({ element: boss, x: gameScreen.clientWidth, y: parseFloat(boss.style.top), isBoss: true });
@@ -179,7 +176,7 @@ function spawnResourceDrone() {
     const drone = document.createElement('img');
     drone.src = 'img/resource-drone.png';
     drone.classList.add('resource-drone');
-    drone.style.top = `${Math.random() * (gameScreen.clientHeight - 60)}px`;
+    drone.style.top = `${Math.random() * (gameScreen.clientHeight - 72)}px`; /* Adjusted for larger size */
     gameScreen.appendChild(drone);
     drone.addEventListener('click', () => {
         credits += 50;
@@ -210,7 +207,7 @@ function updateTurrets() {
             const dx = enemy.x - turret.x;
             const dy = enemy.y - turret.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            const range = 200 * (1 + 0.5 * (turret.level - 1));
+            const range = 240 * (1 + 0.5 * (turret.level - 1)); /* Increased from 200 */
             if (distance < range && !turret.cooldown) {
                 shootLaser(turret, enemy);
                 turret.cooldown = true;
@@ -223,8 +220,8 @@ function updateTurrets() {
 function shootLaser(turret, enemy) {
     const laser = document.createElement('div');
     laser.classList.add('laser');
-    laser.style.left = `${turret.x + 37.5}px`;
-    laser.style.top = `${turret.y + 37.5}px`;
+    laser.style.left = `${turret.x + 45}px`; /* Adjusted for larger turret size */
+    laser.style.top = `${turret.y + 45}px`; /* Adjusted for larger turret size */
     const angle = Math.atan2(enemy.y - turret.y, enemy.x - turret.x);
     laser.style.width = `${Math.sqrt((enemy.x - turret.x) ** 2 + (enemy.y - turret.y) ** 2)}px`;
     laser.style.transform = `rotate(${angle * 180 / Math.PI}deg)`;
@@ -267,7 +264,7 @@ function createExplosion(x, y) {
         particle.classList.add('explosion');
         particle.style.left = `${x}px`;
         particle.style.top = `${y}px`;
-        particle.style.transform = `translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px)`;
+        particle.style.transform = `translate(${Math.random() * 36 - 18}px, ${Math.random() * 36 - 18}px)`; /* Increased from 30-15 */
         gameScreen.appendChild(particle);
         setTimeout(() => particle.remove(), 400);
     }
